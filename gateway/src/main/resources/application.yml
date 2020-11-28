@@ -1,0 +1,20 @@
+server:
+  port: 9527
+spring:
+  application:
+    name: ZUUL-SERVER		#Zuul网关在Eureka的服务名称，随便取
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:7001/eureka	 #Eureka的注册地址
+zuul:
+  routes:
+    provider.serviceId: TEST-PROVIDER	#没有提示，自己取名称，值为服务的名称 127.0.0.1:9527/网关服务名称(小写)/服务提供者名称(小写)/服务路径
+    provider.path: /test/**  #匹配指定的路径，资源匹配的路径才会拦截，转发 网关访问路径变为： 127.0.0.1:9527/test/provider/get
+  ignored-services: "*"      #忽略直接使用服务名   *忽略所有的服务
+  prefix: /server            #统一给访问前缀 访问路径变为： 127.0.0.1:9527/server/test/provider/get
+
+#  规则：127.0.0.1:9527/网关服务名称(小写)/服务提供者名称(小写)/服务路径
+#  例：127.0.0.1:9527/zuul-server/test-provider/provider/get
+#  原来路径：127.0.0.1:9527/zuul-server/test-provider/provider/get
+#  网关访问路径变为： 127.0.0.1:9527/test/provider/get
